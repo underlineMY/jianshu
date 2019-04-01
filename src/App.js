@@ -1,25 +1,32 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component,lazy, Suspense } from 'react';
+import Header from './common/Header/index';
+import store from './store';
+import { Provider } from 'react-redux';
+import { BrowserRouter, Route } from 'react-router-dom';
+import Loadding from './common/Loadding';
+import Home from './pages/home';
+import { GlobalStyle } from './style.js';
+import { Iconfont } from './statics/iconfont/iconfont.js'
+
+const Detail = lazy(() => import('./pages/detail'));
+const Login = lazy(() => import('./pages/login'));
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div>
+        <GlobalStyle />
+        <Iconfont />
+        <Provider store={store}>
+          <BrowserRouter>
+            <Suspense fallback={ <Loadding />}>
+              <Header></Header>
+                <Route path='/' exact component={Home}></Route>
+                <Route path='/login' exact component={Login}></Route>
+                <Route path='/detail/:id' exact component={Detail}></Route>
+              </Suspense>
+          </BrowserRouter>
+        </Provider>
       </div>
     );
   }
