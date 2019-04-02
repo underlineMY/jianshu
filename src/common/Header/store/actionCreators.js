@@ -27,12 +27,14 @@ export const changeNextGroup = (page) => ({
 })
 
 export const getHotList = () => {
-    return (dispatch) => {
-        axios.get('/api/headerList.json').then((res) => {
+    return async (dispatch) => {
+        try {
+            const res = await axios.get('/api/headerList.json');
             const data = res.data.data;
             dispatch(searchList(data));
-        }).catch(() => {
-            console.log('error!');
-        })
+        } catch (error) {
+            console.log(error);
+        }
+        
     }
 }
